@@ -33,31 +33,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Square square = new Square();
-                int[][] sq1 = square.getSquart(256, 256, 0, 100);
-                int[][] sq2 = square.getSquart(256, 256, 0, 100);
+                int[][] sq1 = square.getSquart(512, 512, 0, 100);
+                int[][] sq2 = square.getSquart(512, 512, 0, 100);
 
 //                int[][] sq1 = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
 //                int[][] sq2 = {{1, 5, 9, 13}, {2, 6, 10, 14}, {3, 7, 11, 15}, {4, 8, 12, 16}};
 
-                int[][] res = square.multiplyingSquart(sq1, sq2);
+//                int[][] res = square.multiplyingSquart(sq1, sq2);
                 int[][] res2 = square.mergeSquartSub(sq1, sq2);
 
-                for(int i=0;i<res.length;i++)
-                {
-                    for(int j=0;j<res[i].length;j++)
-                    {
-                        if(res[i][j]!=res2[i][j])
-                        {
-                            Toast.makeText(MainActivity.this, "NOT OK+" + square.count, Toast.LENGTH_LONG).show();
+/*                for (int i = 0; i < res.length; i++) {
+                    for (int j = 0; j < res[i].length; j++) {
+                        if (res[i][j] != res2[i][j]) {
+                            Toast.makeText(MainActivity.this, "NOT OK+" + square.multiplyingSquartCount, Toast.LENGTH_LONG).show();
                             return;
                         }
                     }
                 }
+*/
+                if (res2.length > 2) {
 
-                if (res.length > 2) {
-
-                    Toast.makeText(MainActivity.this, "OK+" + square.count, Toast.LENGTH_LONG).show();
-                    textView.setText(textView.getText().toString() + "\r\n\r\n" + square.count);
+                    Toast.makeText(MainActivity.this, "OK+" + square.multiplyingSquartCount, Toast.LENGTH_LONG).show();
+                    textView.setText(textView.getText().toString() + "\r\n\r\n" + square.multiplyingSquartCount);
                 }
             }
         });

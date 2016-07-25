@@ -9,7 +9,8 @@ import java.util.Random;
  */
 public class Square {
 
-    public long count = 0;
+    public int multiplyingSquartCount = 0;
+    public int mergeSquartSubCount = 0;
 
     public int[][] getSquart(int i, int j, int min, int max) {
         int[][] result = new int[i][j];
@@ -20,7 +21,7 @@ public class Square {
         for (int k = 0; k < i; k++) {
             for (int l = 0; l < j; l++) {
                 result[k][l] = random.nextInt(max - min + 1) + min;
-                this.count++;
+//                this.multiplyingSquartCount++;
             }
         }
 
@@ -41,7 +42,7 @@ public class Square {
                 result[i][j] = 0;
                 for (int k = 0; k < squart1[0].length; k++) {
                     result[i][j] += squart1[i][k] * squart2[k][j];
-                    this.count++;
+                    this.multiplyingSquartCount++;
                 }
             }
         }
@@ -124,10 +125,15 @@ public class Square {
         squartB21 = fillArrary(squartB, squartB21, 0, subLen, subLen, subLen);
         squartB22 = fillArrary(squartB, squartB22, subLen, subLen, subLen, subLen);
 
-        int[][] squartC11 = addArrary(mergeSquartSub(squartA11, squartB11), mergeSquartSub(squartA12, squartB21));
-        int[][] squartC12 = addArrary(mergeSquartSub(squartA11, squartB12), mergeSquartSub(squartA12, squartB22));
-        int[][] squartC21 = addArrary(mergeSquartSub(squartA21, squartB11), mergeSquartSub(squartA22, squartB21));
-        int[][] squartC22 = addArrary(mergeSquartSub(squartA21, squartB12), mergeSquartSub(squartA22, squartB22));
+//        int[][] squartC11 = addArrary(mergeSquartSub(squartA11, squartB11), mergeSquartSub(squartA12, squartB21));
+//        int[][] squartC12 = addArrary(mergeSquartSub(squartA11, squartB12), mergeSquartSub(squartA12, squartB22));
+//        int[][] squartC21 = addArrary(mergeSquartSub(squartA21, squartB11), mergeSquartSub(squartA22, squartB21));
+//        int[][] squartC22 = addArrary(mergeSquartSub(squartA21, squartB12), mergeSquartSub(squartA22, squartB22));
+
+        int[][] squartC11 = addArrary(multiplyingSquart(squartA11, squartB11), multiplyingSquart(squartA12, squartB21));
+        int[][] squartC12 = addArrary(multiplyingSquart(squartA11, squartB12), multiplyingSquart(squartA12, squartB22));
+        int[][] squartC21 = addArrary(multiplyingSquart(squartA21, squartB11), multiplyingSquart(squartA22, squartB21));
+        int[][] squartC22 = addArrary(multiplyingSquart(squartA21, squartB12), multiplyingSquart(squartA22, squartB22));
 
         result = mergeSquart(squartC11, squartC12, squartC21, squartC22);
 
