@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
 import java.io.ByteArrayOutputStream;
 
 public class ImageActivity extends AppCompatActivity {
@@ -66,24 +67,13 @@ public class ImageActivity extends AppCompatActivity {
         paint.setStrokeWidth(1);
 
 
-        int[][] bitmapInt1= Bitmap2Ints(bitmap);
-        int[][] bitmapInt2=new int[bitmap.getWidth()][bitmap.getHeight()];
+        //bitmap图片原始数组
+        int[][] bitmapInt1 = turnArrary(bitmap, 300, 300, 90);
 
-        for(int i=0;i<bitmap.getWidth();i++)
-        {
-            for (int j=0;j<bitmap.getHeight();j++)
-            {
-                bitmapInt2[bitmap.getWidth()-i-1][j]=bitmapInt1[i][j];
-            }
-        }
-
-
-        for(int i=0;i<bitmap.getWidth();i++)
-        {
-            for(int j=0;j<bitmap.getHeight();j++)
-            {
-                paint.setColor(bitmapInt2[i][j]);
-                canvas.drawPoint(i,j,paint);
+        for (int i = 0; i < bitmap.getWidth(); i++) {
+            for (int j = 0; j < bitmap.getHeight(); j++) {
+                paint.setColor(bitmapInt1[i][j]);
+                canvas.drawPoint(i, j, paint);
             }
         }
 
@@ -96,6 +86,33 @@ public class ImageActivity extends AppCompatActivity {
 
     }
 
+    public int[][] turnArrary(Bitmap bitmap, int x, int y, int angle) {
+        //bitmap转换后的数组
+        int[][] bitmapIntresult = new int[bitmap.getWidth()][bitmap.getHeight()];
+        int[][] bitmapInt = Bitmap2Ints(bitmap);
+
+        //数组全部填充白色
+        for (int i = 0; i < bitmap.getWidth(); i++) {
+            for (int j = 0; j < bitmap.getHeight(); j++) {
+                bitmapIntresult[i][j] = Color.WHITE;
+            }
+        }
+
+        //先求出四个定点相对于旋转点的坐标
+        int upLeftX = -x;
+        int upLeftY = y;
+        int upRightX = bitmap.getWidth() - x;
+        int upRightY = y;
+        int downLeftX = -x;
+        int downLeftY = y - bitmap.getHeight();
+        int downRightX = bitmap.getWidth() - x;
+        int downRightY = y - bitmap.getHeight();
+
+
+
+        return bitmapIntresult;
+    }
+
     public byte[] Bitmap2Bytes(Bitmap bm) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -103,16 +120,14 @@ public class ImageActivity extends AppCompatActivity {
     }
 
     public int[][] Bitmap2Ints(Bitmap bm) {
-        int width=bm.getWidth();
-        int height=bm.getHeight();
+        int width = bm.getWidth();
+        int height = bm.getHeight();
 
-        int[][] result=new int[width][height];
+        int[][] result = new int[width][height];
 
-        for(int i=0;i<width;i++)
-        {
-            for(int j=0;j<height;j++)
-            {
-                result[i][j]=bm.getPixel(i,j);
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                result[i][j] = bm.getPixel(i, j);
             }
         }
         return result;
