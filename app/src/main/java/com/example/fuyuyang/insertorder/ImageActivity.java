@@ -68,7 +68,7 @@ public class ImageActivity extends AppCompatActivity {
 
 
         //bitmap图片原始数组
-        int[][] bitmapInt1 = turnArrary(bitmap, 300, 300, 15);
+        int[][] bitmapInt1 = turnArrary(bitmap, 300, 300, 10);
 
         for (int i = 0; i < bitmap.getWidth(); i++) {
             for (int j = 0; j < bitmap.getHeight(); j++) {
@@ -87,11 +87,21 @@ public class ImageActivity extends AppCompatActivity {
     }
 
     public class point {
+
+        public point() {
+            this.x = 0;
+            this.y = 0;
+            this.col = Color.WHITE;
+        }
+
         public int x = 0;
         public int y = 0;
+        public int col = 0;
     }
 
-    public int[][] turnArrary(Bitmap bitmap, int x, int y, int angle) {
+    point[][] mapPoint = new point[600][600];
+
+    public int[][] turnArrary(Bitmap bitmap, int x, int y, double angle) {
         //bitmap转换后的数组
         int[][] bitmapIntresult = new int[bitmap.getWidth()][bitmap.getHeight()];
         int[][] bitmapInt = Bitmap2Ints(bitmap);
@@ -124,26 +134,63 @@ public class ImageActivity extends AppCompatActivity {
         point downLeftT = new point();
         point downRightT = new point();
 
-        double pi = 3.1415926;
+        //先求出常用的常量
+        angle = angle / 180 * Math.PI;
+        double hypotenuseLen = Math.sqrt(upLeft.x * upLeft.x + upLeft.y * upLeft.y);      //三角函数中弦的长度
 
-        //upLeftT.x
-
-//        double res = Math.abs(upLeft.y) / Math.abs(upLeft.x);
-//        res=Math.atan(res);
-//        res=res+angle/180.0*pi;
-//        res=Math.cos(res);
-//        res=res*Math.sqrt(upLeft.x*upLeft.x+upLeft.y*upLeft.y);
-
-        upLeftT.x=  (int)(0.5+Math.cos(Math.atan(Math.abs(upLeft.y) / Math.abs(upLeft.x)) + angle / 180.0 * pi)*Math.sqrt(upLeft.x*upLeft.x+upLeft.y*upLeft.y));
-        upLeftT.y = y;
-        upRightT.x = bitmap.getWidth() - x;
-        upRightT.y = y;
-        downLeftT.x = -x;
-        downLeftT.y = y - bitmap.getHeight();
-        downRightT.x = bitmap.getWidth() - x;
-        downRightT.y = y - bitmap.getHeight();
+        upLeftT.x = (int) (Math.cos(Math.atan2(upLeft.y, upLeft.x) - angle) * hypotenuseLen - 0.5);
+        upLeftT.y = (int) (Math.sin(Math.atan2(upLeft.y, upLeft.x) - angle) * hypotenuseLen + 0.5);
+        upRightT.x = (int) (Math.cos(Math.atan2(upRight.y, upRight.x) - angle) * hypotenuseLen + 0.5);
+        upRightT.y = (int) (Math.sin(Math.atan2(upRight.y, upRight.x) - angle) * hypotenuseLen + 0.5);
+        downLeftT.x = (int) (Math.cos(Math.atan2(downLeft.y, downLeft.x) - angle) * hypotenuseLen - 0.5);
+        downLeftT.y = (int) (Math.sin(Math.atan2(downLeft.y, downLeft.x) - angle) * hypotenuseLen - 0.5);
+        downRightT.x = (int) (Math.cos(Math.atan2(downRight.y, downRight.x) - angle) * hypotenuseLen + 0.5);
+        downRightT.y = (int) (Math.sin(Math.atan2(downRight.y, downRight.x) - angle) * hypotenuseLen - 0.5);
 
 
+        for (int i = 0; i < bitmap.getWidth(); i++) {
+            for (int j = 0; j < bitmap.getHeight(); j++) {
+                mapPoint[i][j] = new point();
+            }
+        }
+
+        mapPoint[0][0].x = upLeftT.x;
+        mapPoint[0][0].y = upLeftT.y;
+        mapPoint[0][0].col = Color.WHITE;
+
+        mapPoint[bitmap.getWidth() - 1][0].x = upRightT.x;
+        mapPoint[bitmap.getWidth() - 1][0].y = upRightT.y;
+        mapPoint[bitmap.getWidth() - 1][0].col = Color.WHITE;
+
+        mapPoint[0][bitmap.getHeight() - 1].x = downLeftT.x;
+        mapPoint[0][bitmap.getHeight() - 1].y = downLeftT.y;
+        mapPoint[0][bitmap.getHeight() - 1].col = Color.WHITE;
+
+        mapPoint[bitmap.getWidth() - 1][bitmap.getHeight() - 1].x = downRightT.x;
+        mapPoint[bitmap.getWidth() - 1][bitmap.getHeight() - 1].y = downRightT.y;
+        mapPoint[bitmap.getWidth() - 1][bitmap.getHeight() - 1].col = Color.WHITE;
+
+        int[] temp = new int[600];
+        //求上边坐标
+        for (int i = 1; i < bitmap.getWidth() - 1; i++) {
+            mapPoint[i][0].x = upLeftT.x + (int) (i * (upRightT.x - upLeftT.x) / ((double) bitmap.getWidth()) + 0.5);
+            mapPoint[i][0].y = upLeftT.y + (int) (i * (upRightT.y - upLeftT.y) / ((double) bitmap.getHeight()) - 0.5);
+        }
+        //求下边坐标
+        for (int i = 1; i < bitmap.getWidth() - 1; i++) {
+            mapPoint[i][bitmap.getHeight() - 1].x = downLeftT.x + (int) (i * (downRightT.x - downLeftT.x) / ((double) bitmap.getWidth()) + 0.5);
+            mapPoint[i][bitmap.getHeight() - 1].y = downLeftT.y + (int) (i * (downRightT.y - downLeftT.y) / ((double) bitmap.getHeight()) - 0.5);
+        }
+        //求左边坐标
+        for (int i = 1; i < bitmap.getHeight(); i++) {
+            mapPoint[0][i].x = upLeftT.x + (int) (i * (downLeftT.x - upLeftT.x) / ((double) bitmap.getWidth()) - 0.5);
+            mapPoint[0][i].y = upLeftT.y + (int) (i * (downLeftT.y - upLeftT.y) / ((double) bitmap.getHeight()) - 0.5);
+        }
+        //求右边坐标
+        for (int i = 1; i < bitmap.getHeight(); i++) {
+            mapPoint[bitmap.getWidth() - 1][i].x = upRightT.x + (int) (i * (downRightT.x - upRightT.x) / ((double) bitmap.getWidth()) - 0.5);
+            mapPoint[bitmap.getWidth() - 1][i].y = upRightT.y + (int) (i * (downRightT.y - upRightT.y) / ((double) bitmap.getHeight()) - 0.5);
+        }
         return bitmapIntresult;
     }
 
