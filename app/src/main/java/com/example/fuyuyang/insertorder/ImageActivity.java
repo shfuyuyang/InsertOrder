@@ -68,7 +68,7 @@ public class ImageActivity extends AppCompatActivity {
 
 
         //bitmap图片原始数组
-        int[][] bitmapInt1 = turnArrary(bitmap, 300, 300, 90);
+        int[][] bitmapInt1 = turnArrary(bitmap, 300, 300, 15);
 
         for (int i = 0; i < bitmap.getWidth(); i++) {
             for (int j = 0; j < bitmap.getHeight(); j++) {
@@ -86,6 +86,11 @@ public class ImageActivity extends AppCompatActivity {
 
     }
 
+    public class point {
+        public int x = 0;
+        public int y = 0;
+    }
+
     public int[][] turnArrary(Bitmap bitmap, int x, int y, int angle) {
         //bitmap转换后的数组
         int[][] bitmapIntresult = new int[bitmap.getWidth()][bitmap.getHeight()];
@@ -99,15 +104,44 @@ public class ImageActivity extends AppCompatActivity {
         }
 
         //先求出四个定点相对于旋转点的坐标
-        int upLeftX = -x;
-        int upLeftY = y;
-        int upRightX = bitmap.getWidth() - x;
-        int upRightY = y;
-        int downLeftX = -x;
-        int downLeftY = y - bitmap.getHeight();
-        int downRightX = bitmap.getWidth() - x;
-        int downRightY = y - bitmap.getHeight();
+        point upLeft = new point();
+        point upRight = new point();
+        point downLeft = new point();
+        point downRight = new point();
 
+        upLeft.x = -x;
+        upLeft.y = y;
+        upRight.x = bitmap.getWidth() - x;
+        upRight.y = y;
+        downLeft.x = -x;
+        downLeft.y = y - bitmap.getHeight();
+        downRight.x = bitmap.getWidth() - x;
+        downRight.y = y - bitmap.getHeight();
+
+        //计算旋转后的四个点坐标
+        point upLeftT = new point();
+        point upRightT = new point();
+        point downLeftT = new point();
+        point downRightT = new point();
+
+        double pi = 3.1415926;
+
+        //upLeftT.x
+
+//        double res = Math.abs(upLeft.y) / Math.abs(upLeft.x);
+//        res=Math.atan(res);
+//        res=res+angle/180.0*pi;
+//        res=Math.cos(res);
+//        res=res*Math.sqrt(upLeft.x*upLeft.x+upLeft.y*upLeft.y);
+
+        upLeftT.x=  (int)(0.5+Math.cos(Math.atan(Math.abs(upLeft.y) / Math.abs(upLeft.x)) + angle / 180.0 * pi)*Math.sqrt(upLeft.x*upLeft.x+upLeft.y*upLeft.y));
+        upLeftT.y = y;
+        upRightT.x = bitmap.getWidth() - x;
+        upRightT.y = y;
+        downLeftT.x = -x;
+        downLeftT.y = y - bitmap.getHeight();
+        downRightT.x = bitmap.getWidth() - x;
+        downRightT.y = y - bitmap.getHeight();
 
 
         return bitmapIntresult;
