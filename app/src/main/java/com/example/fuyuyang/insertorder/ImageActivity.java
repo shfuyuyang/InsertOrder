@@ -68,7 +68,7 @@ public class ImageActivity extends AppCompatActivity {
 
 
         //bitmap图片原始数组
-        int[][] bitmapInt1 = turnArrary(bitmap, 300, 300, 10);
+        int[][] bitmapInt1 = turnArrary(bitmap, 300, 300, 5);
 
         for (int i = 0; i < bitmap.getWidth(); i++) {
             for (int j = 0; j < bitmap.getHeight(); j++) {
@@ -175,22 +175,45 @@ public class ImageActivity extends AppCompatActivity {
         for (int i = 1; i < bitmap.getWidth() - 1; i++) {
             mapPoint[i][0].x = upLeftT.x + (int) (i * (upRightT.x - upLeftT.x) / ((double) bitmap.getWidth()) + 0.5);
             mapPoint[i][0].y = upLeftT.y + (int) (i * (upRightT.y - upLeftT.y) / ((double) bitmap.getHeight()) - 0.5);
+            mapPoint[i][0].col = Color.BLACK;
         }
         //求下边坐标
         for (int i = 1; i < bitmap.getWidth() - 1; i++) {
             mapPoint[i][bitmap.getHeight() - 1].x = downLeftT.x + (int) (i * (downRightT.x - downLeftT.x) / ((double) bitmap.getWidth()) + 0.5);
             mapPoint[i][bitmap.getHeight() - 1].y = downLeftT.y + (int) (i * (downRightT.y - downLeftT.y) / ((double) bitmap.getHeight()) - 0.5);
+            mapPoint[i][bitmap.getHeight() - 1].col = Color.BLACK;
         }
         //求左边坐标
         for (int i = 1; i < bitmap.getHeight(); i++) {
             mapPoint[0][i].x = upLeftT.x + (int) (i * (downLeftT.x - upLeftT.x) / ((double) bitmap.getWidth()) - 0.5);
             mapPoint[0][i].y = upLeftT.y + (int) (i * (downLeftT.y - upLeftT.y) / ((double) bitmap.getHeight()) - 0.5);
+            mapPoint[0][i].col = Color.BLACK;
         }
+
         //求右边坐标
         for (int i = 1; i < bitmap.getHeight(); i++) {
             mapPoint[bitmap.getWidth() - 1][i].x = upRightT.x + (int) (i * (downRightT.x - upRightT.x) / ((double) bitmap.getWidth()) - 0.5);
             mapPoint[bitmap.getWidth() - 1][i].y = upRightT.y + (int) (i * (downRightT.y - upRightT.y) / ((double) bitmap.getHeight()) - 0.5);
+            mapPoint[bitmap.getWidth() - 1][i].col = Color.BLACK;
         }
+
+        for (int i = 1; i < bitmap.getWidth(); i++) {
+            for (int j = 1; j < bitmap.getHeight(); j++) {
+                mapPoint[i][j].x = mapPoint[0][j].x + (int) (i * (mapPoint[bitmap.getWidth() - 1][j].x - mapPoint[0][j].x) / ((double) bitmap.getWidth()) + 0.5);
+                mapPoint[i][j].y = mapPoint[0][j].y + (int) (i * (mapPoint[bitmap.getWidth() - 1][j].y-mapPoint[0][j].y ) / ((double) bitmap.getHeight()) - 0.5);
+
+            }
+        }
+
+        for (int i = 0; i < bitmap.getWidth(); i++) {
+            for (int j = 0; j < bitmap.getHeight(); j++) {
+                if (((mapPoint[i][j].x + x >= 0) && (mapPoint[i][j].x + x < bitmap.getWidth())) &&
+                        ((mapPoint[i][j].y + y >= 0) && (mapPoint[i][j].y + y < bitmap.getHeight()))) {
+                    bitmapIntresult[mapPoint[i][j].x + x][mapPoint[i][j].y + y] = bitmapInt[i][j];
+                }
+            }
+        }
+
         return bitmapIntresult;
     }
 
