@@ -68,7 +68,7 @@ public class ImageActivity extends AppCompatActivity {
 
 
         //bitmap图片原始数组
-        int[][] bitmapInt1 = turnArrary(bitmap, 300, 300, 5);
+        int[][] bitmapInt1 = turnArrary(bitmap, 300, 300, 270);
 
         for (int i = 0; i < bitmap.getWidth(); i++) {
             for (int j = 0; j < bitmap.getHeight(); j++) {
@@ -200,7 +200,7 @@ public class ImageActivity extends AppCompatActivity {
         for (int i = 1; i < bitmap.getWidth(); i++) {
             for (int j = 1; j < bitmap.getHeight(); j++) {
                 mapPoint[i][j].x = mapPoint[0][j].x + (int) (i * (mapPoint[bitmap.getWidth() - 1][j].x - mapPoint[0][j].x) / ((double) bitmap.getWidth()) + 0.5);
-                mapPoint[i][j].y = mapPoint[0][j].y + (int) (i * (mapPoint[bitmap.getWidth() - 1][j].y-mapPoint[0][j].y ) / ((double) bitmap.getHeight()) - 0.5);
+                mapPoint[i][j].y = mapPoint[i][0].y + (int) (j * (mapPoint[i][bitmap.getHeight() - 1].y - mapPoint[i][0].y) / ((double) bitmap.getHeight()) - 0.5);
 
             }
         }
@@ -208,8 +208,8 @@ public class ImageActivity extends AppCompatActivity {
         for (int i = 0; i < bitmap.getWidth(); i++) {
             for (int j = 0; j < bitmap.getHeight(); j++) {
                 if (((mapPoint[i][j].x + x >= 0) && (mapPoint[i][j].x + x < bitmap.getWidth())) &&
-                        ((mapPoint[i][j].y + y >= 0) && (mapPoint[i][j].y + y < bitmap.getHeight()))) {
-                    bitmapIntresult[mapPoint[i][j].x + x][mapPoint[i][j].y + y] = bitmapInt[i][j];
+                        (((y - mapPoint[i][j].y) >= 0) && ((y - mapPoint[i][j].y) < bitmap.getHeight()))) {
+                    bitmapIntresult[mapPoint[i][j].x + x][y - mapPoint[i][j].y] = bitmapInt[i][j];
                 }
             }
         }
