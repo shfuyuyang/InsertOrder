@@ -1,6 +1,7 @@
 package com.example.fuyuyang.insertorder;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
@@ -25,6 +27,7 @@ public class ImageActivity extends AppCompatActivity {
 
     Button buttonLeft = null;
     Button buttonRight = null;
+    EditText editText = null;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -35,17 +38,21 @@ public class ImageActivity extends AppCompatActivity {
         buttonLeft = (Button) findViewById(R.id.buttonLeft);
         buttonRight = (Button) findViewById(R.id.buttonRight);
         imageView = (ImageView) findViewById(R.id.imageView);
+        editText = (EditText) findViewById(R.id.editTextAngle);
+
 
         buttonLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rotateImage(0, 0);
+                int angle = Integer.valueOf(editText.getText().toString());
+                rotateImage(0, angle);
             }
         });
         buttonRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rotateImage(1, 0);
+                int angle = Integer.valueOf(editText.getText().toString());
+                rotateImage(1, angle);
             }
         });
     }
@@ -66,9 +73,18 @@ public class ImageActivity extends AppCompatActivity {
         paint.setColor(Color.RED);
         paint.setStrokeWidth(1);
 
+        angle = angle % 360;
+
+        //将所有方向的旋转都转变为顺时针旋转
+        if (dir == 0) {
+            //逆时针
+            angle = 360 - angle;
+        } else if (dir == 1) {
+            //顺时针
+        }
 
         //bitmap图片原始数组
-        int[][] bitmapInt1 = turnArrary(bitmap, 300, 300, 270);
+        int[][] bitmapInt1 = turnArrary(bitmap, 300, 300, angle);
 
         for (int i = 0; i < bitmap.getWidth(); i++) {
             for (int j = 0; j < bitmap.getHeight(); j++) {
