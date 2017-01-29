@@ -2,5 +2,6 @@
     <string name="app_name_color">色彩融合测试</string>
     <string name="app_name_image">图片旋转测试</string>
     <string name="app_name_main">算法测试</string>
+    <string name="app_name_raw">读图测试</string>
     <string name="title_activity_main2">Main2Activity</string>
 </resources>
