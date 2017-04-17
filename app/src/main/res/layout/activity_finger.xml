@@ -13,33 +13,71 @@
         android:id="@+id/textViewPath"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="/storage/emulated/0/BaiduNetdisk/B000000.raw"
         android:textSize="20dp" />
 
-    <Button
-        android:id="@+id/buttonScan"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewPath"
         android:layout_centerHorizontal="true"
-        android:text="浏览" />
+        android:orientation="vertical">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttonDisplay"
-        android:layout_below="@id/buttonScan"
-        android:layout_centerHorizontal="true"
-        android:text="显示"
-        />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
 
-    <ImageView
-        android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/buttonScan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="浏览" />
+
+            <Button
+                android:id="@+id/buttonDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="显示" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="抓图"
+                android:id="@+id/buttonCaptureImage"
+                />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/buttonDisplay"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/empty"
-        android:id="@+id/imageViewPro"
-        />
+        android:layout_below="@id/RelativeLayout1"
+        >
+
+        <ImageView
+            android:id="@+id/imageViewPro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/empty"
+            android:layout_weight="1"
+            />
+
+        <ImageView
+            android:id="@+id/imageViewPro2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/empty"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
 
 
 </RelativeLayout>
